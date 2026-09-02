@@ -1,1 +1,78 @@
+double my_atof(const char *p)
+{
+    int k = 1;
+    int exp_sign = 1;
+    int exponent = 0;
 
+    while (*p == ' ' || *p == '\r' || *p == '\n' || *p == '\t')
+        p++;
+
+    if (*p == '+')
+    {
+        k = 1;
+        p++;
+    }
+    else if (*p == '-')
+    {
+        k = -1;
+        p++;
+    }
+
+    double sum = 0;
+    double fraction = 0.1;
+    double decimal = 0;
+    double total;
+
+    while (*p >= '0' && *p <= '9')
+    {
+        sum = sum * 10 + (*p - '0');
+        p++;
+    }
+
+    if (*p == '.')
+    {
+        p++;
+
+        while (*p >= '0' && *p <= '9')
+        {
+            decimal = decimal + fraction * (*p - '0');
+            fraction /= 10;
+            p++;
+        }
+    }
+
+    total = sum + decimal;
+
+    if (*p == 'e' || *p == 'E')
+    {
+        p++;
+
+        if (*p == '+')
+        {
+            p++;
+        }
+        else if (*p == '-')
+        {
+            exp_sign = -1;
+            p++;
+        }
+
+        while (*p >= '0' && *p <= '9')
+        {
+            exponent = exponent * 10 + (*p - '0');
+            p++;
+        }
+
+        while (exponent > 0)
+        {
+            if (exp_sign == 1)
+                total = total * 10;
+            else
+                total = total / 10;
+
+            exponent--;
+        }
+    }
+
+    return k * total;
+}
