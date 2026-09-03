@@ -1,78 +1,47 @@
-double my_atof(const char *p)
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int my_atoi(const char *);
+
+int main()
 {
-    int k = 1;
-    int exp_sign = 1;
-    int exponent = 0;
+    int n;
+    char s[50];
 
-    while (*p == ' ' || *p == '\r' || *p == '\n' || *p == '\t')
+    printf("enter the string\n");
+    scanf("%49[^\n]", s);
+
+    n = my_atoi(s);
+
+    printf("%d\n", n);
+
+    return 0;
+}
+
+int my_atoi(const char *p)
+{
+    int num = 0;
+    int j = 1;
+
+    while (*p == ' ' || *p == '\t' || *p == '\r' || *p == '\n')
         p++;
 
-    if (*p == '+')
+    if (*p == '-')
     {
-        k = 1;
+        j = -1;
         p++;
     }
-    else if (*p == '-')
+    else if (*p == '+')
     {
-        k = -1;
         p++;
     }
-
-    double sum = 0;
-    double fraction = 0.1;
-    double decimal = 0;
-    double total;
 
     while (*p >= '0' && *p <= '9')
     {
-        sum = sum * 10 + (*p - '0');
+        num = num * 10 + (*p - '0');
         p++;
     }
 
-    if (*p == '.')
-    {
-        p++;
-
-        while (*p >= '0' && *p <= '9')
-        {
-            decimal = decimal + fraction * (*p - '0');
-            fraction /= 10;
-            p++;
-        }
-    }
-
-    total = sum + decimal;
-
-    if (*p == 'e' || *p == 'E')
-    {
-        p++;
-
-        if (*p == '+')
-        {
-            p++;
-        }
-        else if (*p == '-')
-        {
-            exp_sign = -1;
-            p++;
-        }
-
-        while (*p >= '0' && *p <= '9')
-        {
-            exponent = exponent * 10 + (*p - '0');
-            p++;
-        }
-
-        while (exponent > 0)
-        {
-            if (exp_sign == 1)
-                total = total * 10;
-            else
-                total = total / 10;
-
-            exponent--;
-        }
-    }
-
-    return k * total;
+    return num * j;
 }
